@@ -2,8 +2,8 @@
 
 int main(void){
   char *con  = json_load("person.json");
-  String str = getvalue(con,"languages","programming","0",NULL);
-  dumpstring(&str,1);
+  String str = getvalue(con,"age",NULL);
+  stringfullinfo(&str);
   if (con  != NULL)free(con);
   
   return 0;
