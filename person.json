@@ -1,0 +1,6 @@
+{"name":"saeed",
+ "country":"sweden",
+ "job":"programmer",
+ "age" : 37,
+ "hobby" : ["computer graphic","cooking","jogging","travelling"],
+ "languages" : {"speaking":["persian","english","swedish"],"programming":["C","FORTRAN","Javascript","html","php","python","css"]}}
