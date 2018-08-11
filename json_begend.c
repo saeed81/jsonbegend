@@ -612,7 +612,7 @@ void dumpstring(String *str, int extrainfo){
 	printf("TYPE is unknown.\n");
       }break;
       }
-      printf("Value is = \t");
+      printf("Value is = ");
     }
     for (char *it =str->beg; it <= str->end;++it)printf("%c",*it);
   }
