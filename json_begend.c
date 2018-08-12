@@ -1,6 +1,183 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdarg.h>
+
+int isnull(char *str){
+  if (str == NULL) return 0;
+  int len = 0;
+  char *tmp = str;
+  while(*tmp != '\0'){
+    len++;
+    tmp++;
+  }
+  if (len != 4) return 0;
+  tmp = str;
+  if (*tmp == 'n' && *(tmp+1) == 'u'  && *(tmp+2) == 'l' && *(tmp+3) == 'l' && *(tmp+4) == '\0'){
+    return 1;
+  }
+  return 0;
+}
+int isbool(char *str){
+  if (str == NULL) return 0;
+  int len = 0;
+  char *tmp = str;
+  if (*tmp != 't' && *tmp != 'f'){
+    return 0;
+  }
+  while(*tmp != '\0'){
+    len++;
+    tmp++;
+  }
+  tmp = str;
+  if (*tmp == 't' && len != 4) return 0;
+  if (*tmp == 'f' && len != 5) return 0;
+  if (*tmp == 't') {
+    if (*(tmp+1) == 'r' && *(tmp+2) == 'u'  && *(tmp+3) == 'e'){
+      return 1;
+    }
+  }
+  if (*tmp == 'f') {
+    if (*(tmp+1) == 'a' && *(tmp+2) == 'l'  && *(tmp+3) == 's' && *(tmp+4) == 'e'){
+      return 1;
+    }
+  }
+  return 0;
+}
+int isdotnumeric (char c){
+  int isnum = 0;
+  char dotnumeric[] = ".0123456789";
+  for (int i=0;i<=10;++i){
+    if (c== dotnumeric[i]) isnum = 1;
+  }
+  return isnum;
+}
+
+int ishasonedot (char *str){
+  if (str == NULL) return 0;
+  char *tmp = str;
+  int ncount = 0;
+  int ir = 0;
+  while(*tmp != '\0'){
+    if (*tmp == '.') ncount++;
+    tmp++;
+  }
+  ir = (ncount == 1) ? 1 : 0;
+  return ir;
+}
+int ishasdot (char *str){
+  if (str == NULL) return 0;
+  char *tmp = str;
+  int ncount = 0;
+  int ir = 0;
+  while(*tmp != '\0'){
+    if (*tmp == '.') ncount++;
+    tmp++;
+  }
+  ir = (ncount >= 1) ? 1 : 0;
+  return ir;
+}
+
+int isNumeric(char c){
+  return ( (c>= '0') && (c <= '9'));
+}
+
+
+int isFloat(char *str){
+  if (str == NULL) return 0;
+  char *tmp = str, *tmp1 = NULL;
+  int ir = 0;
+  int inot = 0;
+  int onedot = 0;
+  onedot = ishasonedot(tmp);
+  if (onedot){
+    if (*tmp == '+' || *tmp == '-'){
+      if (*(tmp +1) != '\0' && isdotnumeric(*(tmp+1))){
+	tmp1 = tmp + 1;
+	while (*tmp1 != '\0' ){
+	  if (isdotnumeric(*tmp1) && *tmp1 != 'f' && *tmp1 != 'F' && *tmp1 != 'e' && *tmp1 != 'E' ){
+	      ir += 1;
+	  }
+	  if(!isdotnumeric(*tmp1) && *tmp1 != 'f' && *tmp1 != 'F' && *tmp1 != 'e' && *tmp1 != 'E' ){
+	    inot += 1;
+	  }
+	  tmp1++;
+	}
+      }
+      if (ir >= 1 && inot == 0){
+	return 1;
+      }
+      else {
+	return 0;
+      }
+    }
+  }
+  tmp = str;
+  ir = 0;
+  inot = 0;
+  if (onedot){
+    if (*tmp != '+' && *tmp != '-' && *tmp != '\0' && isdotnumeric(*tmp)){
+      while (*tmp != '\0'){
+	if (isdotnumeric(*tmp) && *tmp != 'f' && *tmp != 'F' && *tmp != 'e' && *tmp != 'E' ){
+	  ir += 1;
+	}
+	if(!isdotnumeric(*tmp) && *tmp != 'f' && *tmp != 'F' && *tmp != 'e' && *tmp != 'E' ){
+	  inot += 1;
+	}
+	tmp++;
+      }
+      if (ir >= 1 && inot == 0){
+	return 1;
+      }
+      else {
+	return 0;
+      }
+    }
+  }
+  return 0;
+}
+
+int isInt(char *str){
+  if (str == NULL) return 0;
+  char *tmp = str, *tmp1 = NULL;
+  int ir = 0;
+  int dot = 0;
+  dot = ishasdot(tmp);
+  if (dot != 0 ) return 0;
+  if (*tmp == '+' || *tmp == '-'){
+      if (*(tmp +1) != '\0' && isNumeric(*(tmp+1))){
+	tmp1 = tmp + 1;
+	while (*tmp1 != '\0' ){
+	  if (!isNumeric(*tmp1)){
+	      ir += 1;
+	  }
+	  tmp1++;
+	}
+      }
+      if (ir != 0){
+	return 0;
+      }
+      else {
+	return 1;
+      }
+  }
+  tmp = str;
+  ir = 0;
+  if (*tmp != '+' && *tmp != '-' && *tmp != '\0' && isNumeric(*tmp)){
+    while (*tmp != '\0'){
+      if (!isNumeric(*tmp)){
+	ir += 1;
+      }
+      tmp++;
+    }
+    if ( ir != 0){
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+  return 0;
+}
 int pow10(int n){
   int d = 1;
   if (n > 0){ 
@@ -1309,6 +1486,4 @@ String getvalue(char *content, char *key,...){
   return rst;
 }
 /*========================================================================*/
-
-
-
+  
