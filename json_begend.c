@@ -92,6 +92,7 @@ int isFloat(char *beg, char *end){
   if (onedot){
     if (*tmp == '+' || *tmp == '-'){
       if (end == beg) return 0;
+      if (((end -beg) == 1) &&  *end == '.') return 0;
       if (isdotnumeric(*(tmp+1))){
 	tmp1 = tmp + 1;
 	while (tmp1 <=end ){
