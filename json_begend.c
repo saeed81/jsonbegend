@@ -2,33 +2,33 @@
 #include<stdlib.h>
 #include<stdarg.h>
 
-int isnull(char *str){
-  if (str == NULL) return 0;
+int isnull(char *beg, char *end){
+  if (beg == NULL || end == NULL) return 0;
   int len = 0;
-  char *tmp = str;
-  while(*tmp != '\0'){
+  char *tmp = beg;
+  while(tmp <= end){
     len++;
     tmp++;
   }
   if (len != 4) return 0;
-  tmp = str;
-  if (*tmp == 'n' && *(tmp+1) == 'u'  && *(tmp+2) == 'l' && *(tmp+3) == 'l' && *(tmp+4) == '\0'){
+  tmp = beg;
+  if (*tmp == 'n' && *(tmp+1) == 'u'  && *(tmp+2) == 'l' && *(tmp+3) == 'l'){
     return 1;
   }
   return 0;
 }
-int isbool(char *str){
-  if (str == NULL) return 0;
+int isbool(char *beg, char *end){
+  if (beg == NULL || end == NULL) return 0;
   int len = 0;
-  char *tmp = str;
+  char *tmp = beg;
   if (*tmp != 't' && *tmp != 'f'){
     return 0;
   }
-  while(*tmp != '\0'){
+  while(tmp <= end){
     len++;
     tmp++;
   }
-  tmp = str;
+  tmp = beg;
   if (*tmp == 't' && len != 4) return 0;
   if (*tmp == 'f' && len != 5) return 0;
   if (*tmp == 't') {
@@ -52,24 +52,24 @@ int isdotnumeric (char c){
   return isnum;
 }
 
-int ishasonedot (char *str){
-  if (str == NULL) return 0;
-  char *tmp = str;
+int ishasonedot (char *beg, char *end){
+  if (beg == NULL || end == NULL) return 0;
+  char *tmp = beg;
   int ncount = 0;
   int ir = 0;
-  while(*tmp != '\0'){
+  while(tmp <= end){
     if (*tmp == '.') ncount++;
     tmp++;
   }
   ir = (ncount == 1) ? 1 : 0;
   return ir;
 }
-int ishasdot (char *str){
-  if (str == NULL) return 0;
-  char *tmp = str;
+int ishasdot (char *beg, char *end){
+  if (beg == NULL || end == NULL) return 0;
+  char *tmp = beg;
   int ncount = 0;
   int ir = 0;
-  while(*tmp != '\0'){
+  while(tmp <=end){
     if (*tmp == '.') ncount++;
     tmp++;
   }
@@ -82,18 +82,19 @@ int isNumeric(char c){
 }
 
 
-int isFloat(char *str){
-  if (str == NULL) return 0;
-  char *tmp = str, *tmp1 = NULL;
+int isFloat(char *beg, char *end){
+  if (beg == NULL || end == NULL)  return 0;
+  char *tmp = beg, *tmp1 = NULL;
   int ir = 0;
   int inot = 0;
   int onedot = 0;
-  onedot = ishasonedot(tmp);
+  onedot = ishasonedot(beg,end);
   if (onedot){
     if (*tmp == '+' || *tmp == '-'){
-      if (*(tmp +1) != '\0' && isdotnumeric(*(tmp+1))){
+      if (end == beg) return 0;
+      if (isdotnumeric(*(tmp+1))){
 	tmp1 = tmp + 1;
-	while (*tmp1 != '\0' ){
+	while (tmp1 <=end ){
 	  if (isdotnumeric(*tmp1) && *tmp1 != 'f' && *tmp1 != 'F' && *tmp1 != 'e' && *tmp1 != 'E' ){
 	      ir += 1;
 	  }
@@ -111,12 +112,13 @@ int isFloat(char *str){
       }
     }
   }
-  tmp = str;
+  tmp = beg;
   ir = 0;
   inot = 0;
   if (onedot){
-    if (*tmp != '+' && *tmp != '-' && *tmp != '\0' && isdotnumeric(*tmp)){
-      while (*tmp != '\0'){
+    if (*tmp != '+' && *tmp != '-' && isdotnumeric(*tmp)){
+      if (end == beg) return 0;
+      while (tmp <= end){
 	if (isdotnumeric(*tmp) && *tmp != 'f' && *tmp != 'F' && *tmp != 'e' && *tmp != 'E' ){
 	  ir += 1;
 	}
@@ -136,17 +138,18 @@ int isFloat(char *str){
   return 0;
 }
 
-int isInt(char *str){
-  if (str == NULL) return 0;
-  char *tmp = str, *tmp1 = NULL;
+int isInt(char *beg, char *end){
+  if (beg == NULL || end == NULL) return 0;
+  char *tmp = beg, *tmp1 = NULL;
   int ir = 0;
   int dot = 0;
-  dot = ishasdot(tmp);
+  dot = ishasdot(beg,end);
   if (dot != 0 ) return 0;
   if (*tmp == '+' || *tmp == '-'){
-      if (*(tmp +1) != '\0' && isNumeric(*(tmp+1))){
+    if (end == beg) return 0;
+      if (isNumeric(*(tmp+1))){
 	tmp1 = tmp + 1;
-	while (*tmp1 != '\0' ){
+	while (tmp1 <= end ){
 	  if (!isNumeric(*tmp1)){
 	      ir += 1;
 	  }
@@ -160,10 +163,10 @@ int isInt(char *str){
 	return 1;
       }
   }
-  tmp = str;
+  tmp = beg;
   ir = 0;
-  if (*tmp != '+' && *tmp != '-' && *tmp != '\0' && isNumeric(*tmp)){
-    while (*tmp != '\0'){
+  if (*tmp != '+' && *tmp != '-' && isNumeric(*tmp)){
+    while (tmp <= end){
       if (!isNumeric(*tmp)){
 	ir += 1;
       }
@@ -915,7 +918,19 @@ void stringfullinfo(String *str){
       printf("TYPE is object\n");
     }break;
     case 's':{
-      printf("TYPE is either string, float or int.\n");
+      printf("TYPE is string \n");
+    }break;
+    case 'f':{
+      printf("TYPE is float \n");
+    }break;
+    case 'i':{
+      printf("TYPE is int  \n");
+    }break;
+    case 'b':{
+      printf("TYPE is bool \n");
+    }break;
+    case 'n':{
+      printf("TYPE is null \n");
     }break;
     default:{
       printf("TYPE is unknown.\n");
@@ -998,6 +1013,18 @@ char typevalue(char *ar, int findex, int lindex){
   else if (ar[findex] == '{' && ar[lindex] == '}'){
     //printf("value is dictionary\n");
     type = 'd';
+  }
+  else if (isFloat(&ar[findex], &ar[lindex])){
+    type = 'f';
+  }
+  else if (isInt(&ar[findex], &ar[lindex])){
+    type = 'i';
+  }
+  else if (isnull(&ar[findex], &ar[lindex])){
+    type = 'n';
+  }
+  else if (isbool(&ar[findex], &ar[lindex])){
+    type = 'b';
   }
   else{
     //printf("value is either string or float");
