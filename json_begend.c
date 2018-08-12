@@ -2,6 +2,8 @@
 #include<stdlib.h>
 #include<stdarg.h>
 
+enum TYPE {JSON_ARRAY = 1<<0, JSON_OBJECT = 1<<2, JSON_STRING = 1<<3, JSON_INT = 1<<4, JSON_FLOAT = 1 <<5, JSON_BOOL = 1 << 6, JSON_Null = 1 << 7, JSON_UNDEF = 1 <<8,}; 
+
 int isnull(char *beg, char *end){
   if (beg == NULL || end == NULL) return 0;
   int len = 0;
