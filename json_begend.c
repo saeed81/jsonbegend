@@ -935,8 +935,8 @@ void stringfullinfo(String *str){
     case JSON_NULL:{
       printf("TYPE is null \n");
     }break;
-    default:{
-      printf("TYPE is unknown.\n");
+    case JSON_UNDEF:{
+      printf("TYPE is undefined.\n");
     }break;
     }
     printf("Value is = ");
