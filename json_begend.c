@@ -350,6 +350,75 @@ float stof(char *st){
   return (c*(d + df));
 }
 
+float stof_bg(char *beg, char *end){
+  
+  int sign = 0;
+  int nc=0;
+  char *temp = beg;
+  char *tint = beg;
+
+  while (temp <= end){
+    if ( *temp != ' '){
+      if (*temp == '.'){
+	break;
+      }
+      else{
+	nc++;
+      }
+    }
+    temp++;
+  }
+  nc--;
+  float d = 0.0;
+  int c = 1;
+  while (tint <= end){
+    if (*tint == '-'){
+      c = -1;
+      nc--; 
+      tint++;
+      sign += 1;
+      if (sign > 1 ) return 0.0;
+    }
+    else if (*tint == '+'){
+      c = 1;
+      nc--; 
+      tint++;
+      sign += 1;
+      if (sign > 1 ) return 0.0;
+    }
+    else if( *tint != ' ') {
+      if (*tint == '.') break;
+      d += (float)((int)(*tint - '0')*pow10(nc));
+      tint++;
+      nc--;
+    }
+    else {
+      tint++;
+    }
+  }
+
+  char *tm = beg;
+
+  while (tm <= end){
+
+    if (*tm == '.') break;
+    tm++;
+  }
+  char *tm1 = (++tm);
+  nc=0;
+  float df = 0.0;
+  while (tm1 <=end){
+    if ( *tm1 != ' ') {
+    nc++; 
+    df += (float)((int)(*tm1 - '0')*npow10(nc));
+    tm1++;
+    }
+  }
+  
+  return (c*(d + df));
+}
+
+
 /* matching.h file is here now */
 int istoplevelkey(char *beg, char *end){
 
