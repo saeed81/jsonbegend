@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<stdarg.h>
 
-enum TYPE {JSON_ARRAY = 1<<0, JSON_OBJECT = 1<<2, JSON_STRING = 1<<3, JSON_INT = 1<<4, JSON_FLOAT = 1 <<5, JSON_BOOL = 1 << 6, JSON_Null = 1 << 7, JSON_UNDEF = 1 <<8,}; 
+typedef enum TTYPE {JSON_ARRAY = 1<<0, JSON_OBJECT = 1<<2, JSON_STRING = 1<<3, JSON_INT = 1<<4, JSON_FLOAT = 1 <<5, JSON_BOOL = 1 << 6, JSON_NULL = 1 << 7, JSON_UNDEF = 1 <<8,}TYPE; 
 
 int isnull(char *beg, char *end){
   if (beg == NULL || end == NULL) return 0;
@@ -899,7 +899,7 @@ void array_explode(char *st){
 typedef struct tString{
   char *beg;
   char *end;
-  char type;
+  TYPE type;
 }String;
 
 void stringinfo(String *str){
@@ -914,25 +914,25 @@ void stringinfo(String *str){
 void stringfullinfo(String *str){
   if ((str->beg != NULL) && (str->end != NULL)){
     switch(str->type){
-    case 'a': {
+    case JSON_ARRAY: {
       printf("TYPE is array\n");
     }break;
-    case 'd':{
+    case JSON_OBJECT:{
       printf("TYPE is object\n");
     }break;
-    case 's':{
+    case JSON_STRING:{
       printf("TYPE is string \n");
     }break;
-    case 'f':{
+    case JSON_FLOAT:{
       printf("TYPE is float \n");
     }break;
-    case 'i':{
+    case JSON_INT:{
       printf("TYPE is int  \n");
     }break;
-    case 'b':{
+    case JSON_BOOL:{
       printf("TYPE is bool \n");
     }break;
-    case 'n':{
+    case JSON_NULL:{
       printf("TYPE is null \n");
     }break;
     default:{
@@ -1005,33 +1005,33 @@ int iswhitespace(char c){
   return 0;
 }
 
-char typevalue(char *ar, int findex, int lindex){
+TYPE typevalue(char *ar, int findex, int lindex){
 
-  char type = '\0';
+  TYPE type = JSON_UNDEF;
 
   if (ar[findex] == '[' && ar[lindex] == ']'){
     //printf("value is array\n");
-    type = 'a';
+    type = JSON_ARRAY;
   }
   else if (ar[findex] == '{' && ar[lindex] == '}'){
     //printf("value is dictionary\n");
-    type = 'd';
+    type = JSON_OBJECT;
   }
   else if (isFloat(&ar[findex], &ar[lindex])){
-    type = 'f';
+    type = JSON_FLOAT;
   }
   else if (isInt(&ar[findex], &ar[lindex])){
-    type = 'i';
+    type = JSON_INT;
   }
   else if (isnull(&ar[findex], &ar[lindex])){
-    type = 'n';
+    type = JSON_NULL;
   }
   else if (isbool(&ar[findex], &ar[lindex])){
-    type = 'b';
+    type = JSON_BOOL;
   }
   else{
     //printf("value is either string or float");
-    type = 's';
+    type = JSON_STRING;
   }
   
   return type;
@@ -1338,7 +1338,7 @@ String getvalue(char *content, char *key,...){
     }
   }
   int narg = 1;
-  char type = '\0'; 
+  TYPE type = JSON_UNDEF; 
   //printf("\n");
   type = typevalue(content,findex,lindex);
 
@@ -1348,7 +1348,7 @@ String getvalue(char *content, char *key,...){
   while((key=va_arg(vs,char *)) != NULL){
     dynamic = 0;
     //printf("%c\n",type);
-    if (type == 'a'){
+    if (type == JSON_ARRAY){
       //printf("%s\n",key);
       Index index = array_value_pt(&content[findex],&content[lindex],key);
       if ((index.findex == -1) || (index.lindex == -1)){
