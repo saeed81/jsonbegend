@@ -184,10 +184,10 @@ int isInt(char *beg, char *end){
   }
   return 0;
 }
-int pow10(int n){
-  int d = 1;
+long long int pow10(long long int n){
+  long long int d = 1;
   if (n > 0){ 
-    for (int i=0; i < n;++i) d *= 10;
+    for (long long int i=0; i < n;++i) d *= 10;
   }
   return d;
 }
@@ -241,9 +241,9 @@ int stoi(char *st){
   return (c*d);
 }
 
-int stoi_bg(char *beg, char *end){
+long long int stoi_bg(char *beg, char *end){
   int sign = 0;
-  int nc=0;
+  long long int nc=0;
   char *temp = beg;
   
   while (temp<=end ){
@@ -251,8 +251,8 @@ int stoi_bg(char *beg, char *end){
     temp++;
   }
   nc--;
-  int d = 0;
-  int c = 1;
+  long long int d = 0;
+  long long int c = 1;
   char *st = beg;
   while (st<=end ){
     if (*st == '-'){
