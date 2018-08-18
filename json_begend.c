@@ -200,10 +200,9 @@ float npow10(int n){
   return d;
 }
 
-int stoi(char *st){
+long long int stoi(char *st){
   int sign = 0;
-
-  int nc=0;
+  long long int nc=0;
   char *temp = st;
 
   while (*temp != '\0' ){
@@ -211,8 +210,8 @@ int stoi(char *st){
     temp++;
   }
   nc--;
-  int d = 0;
-  int c = 1;
+  long long int d = 0;
+  long long int c = 1;
   while (*st != '\0'){
     if (*st == '-'){
       c = -1;
@@ -918,6 +917,93 @@ Index array_value_pt(char *beg, char *end, char *cind){
   return indout;
 }
 
+
+void array_explode_bg(char *beg, char *end){
+  int len   = 0;
+  char *tmp = beg;
+  if (beg == NULL || end == NULL) return;
+  while(tmp <= end){
+    len++;
+    tmp++;
+  }
+  char type = '\0';
+  int dicel = 0;
+  char *st = beg;
+  if ( *st== '['){
+    printf("this is array\n");
+    type = 'a';
+  }
+  int j = -1;
+  if (type == 'a'){
+    for (int i=1; i < len; ++i){
+      if (*(st+i) == '{'){
+	j = i;
+	break;
+      }
+    }
+  }
+  if (j > 0){
+    dicel = 1;
+    for (int i=(j-1); i>0;--i){
+      if ((*(st+i) != ' ') || (*(st+i) != '\t') || (*(st+i) != '\r') || (*(st+i) != '\n') ){
+	dicel = 0;
+	break;
+      }
+    }
+  }
+  int index = -1;
+  int icol  = -1;
+  int nel   = 0;
+  if (dicel == 1){
+    while( j < len){
+      icol = 0;
+      match(st+j, '{', &index);
+      //printf("j is %d and index is \t %c \n",j,st[j+index]);
+      for (int i=j;i<=(j+index);++i){
+	printf("%c",*(st+i));
+      }
+      printf("\n");
+      nel++;
+      for (int i=(j+index+1);i < len;++i){
+	if (*(st+i) == ','){
+	  j = i;
+	  icol = 1;
+	  break;
+	}
+      }
+      if (icol == 0) break;
+      for (int i=(j+1);i < len;++i){
+	if (*(st+i) == '{'){
+	  j = i;
+	  break;
+	}
+      }
+    }
+    printf("number of elements is %d\n",nel);
+  }
+  index = -1;
+  icol  = -1;
+  nel   = 0;
+  j = 1;
+  if (dicel == 0 ){
+    while( j < len){
+      icol = 0;
+      nel++;
+      for (int i=j;i < len;++i){
+	if (*(st+i) == ','){
+	  j = (i+1);
+	  icol = 1;
+	  break;
+	}
+      }
+      //printf("j is %d\n",j);
+      if (icol == 0) break;
+    }
+    //printf("number of elements is %d\n",nel);
+  }
+  //fun("10");
+  //printf("%d\n",power10(5));
+}
 
 void array_explode(char *st){
   int len   = 0;
