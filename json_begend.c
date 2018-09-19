@@ -1713,3 +1713,87 @@ String getvalue(char *content, char *key,...){
 }
 /*========================================================================*/
   
+/*========================================================================*/
+int array_count_pt(char *beg, char *end){
+  int len   = 0;
+  char *tmp = beg;
+  while(tmp <= end){
+    len++;
+    tmp++;
+  }
+  char type = '\0';
+  int dicel  = 0;
+  int rb     = 0;
+  if (*beg == '['){
+    //printf("this is array\n");
+    type = 'a';
+  }
+  match(beg, '[', &rb);
+  //printf("rb %d\n",rb);
+  int j = -1, i = 1;
+  if (type == 'a'){
+    for (char *it = (beg+1); it < end; ++it){
+      if (*it == '{'){
+	j = i;
+	break;
+	i++;
+      }
+    }
+  }
+  if (j > 0){
+    dicel = 1;
+    for (char *it=(beg+j-1); it> beg;--it){
+      if ((*it != ' ') || (*it != '\t') || (*it!= '\r') || (*it != '\n') ){
+	dicel = 0;
+	break;
+      }
+    }
+  }
+  int index = -1;
+  int icol  = -1;
+  int nel   = 0;
+  if (dicel == 1){
+    while( j < (len-1)){
+      icol = 0;
+      match(beg+j, '{', &index);
+      //printf("j is %d and index is \t\n",j);
+      //printf("\n");
+      for (int i=(j+index+1);i < (len-1);++i){
+	if (*(beg+i) == ','){
+	  j = i;
+	  icol = 1;
+	  break;
+	}
+      }
+      nel++;
+      if (icol == 0) break;
+      for (int i=(j+1);i < (len-1);++i){
+	if (*(beg+i) == '{'){
+	  j = i;
+	  break;
+	}
+      }
+    }
+    //printf("hhhhh number of elements is %d\n",nel);
+    return nel;
+  }
+  nel   = 0;
+  j = 1;
+  if (dicel == 0 ){
+    //printf("we are here dicel =0 len %d \n",len);
+    while( (j < (len-1))){
+      icol = 0;
+      for (int i=j;i < (len-1);++i){
+	if (*(beg+i) == ','){
+	  j = (i+1);
+	  icol = 1;
+	  break;
+	}
+      }
+      nel++;
+      if (icol == 0) break;
+    }
+  }
+  return nel;
+}
+
