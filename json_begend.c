@@ -1797,3 +1797,38 @@ int array_count_pt(char *beg, char *end){
   return nel;
 }
 
+void copytostring(char *cout, int sz, char *beg, char *end){
+
+  char *tmp = (char *)cout;
+  char *str = (char *)&cout;
+  int ii = 0;
+  for(char *it =beg; (it<=end && ii < sz) ;++it){
+    *tmp = *it;
+    ii++;
+    tmp++;
+  }
+  *tmp = '\0';
+  tmp=str;
+}
+
+void outputtobuffer(FILE *file, char *str){
+
+  char *tmp = str;
+  while(*tmp != '\0'){
+    fprintf(file,"%c",*tmp);
+    tmp++;
+  }
+  fprintf(file,"\n");
+}
+
+  
+  
+    
+
+  
+  
+  
+  
+
+  
+
