@@ -1800,7 +1800,7 @@ int array_count_pt(char *beg, char *end){
 void copytostring(char *cout, int sz, char *beg, char *end){
 
   char *tmp = (char *)cout;
-  char *str = (char *)&cout;
+  char *str = (char *)cout;
   int ii = 0;
   for(char *it =beg; (it<=end && ii < sz) ;++it){
     *tmp = *it;
