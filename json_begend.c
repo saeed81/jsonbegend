@@ -358,6 +358,8 @@ float stof(char *st){
 }
 
 float stof_bg(char *beg, char *end){
+
+  if (isInt(beg, end)) return ((float)stoi_bg(st));
   
   int sign = 0;
   int nc=0;
