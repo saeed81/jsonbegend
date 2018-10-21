@@ -282,6 +282,14 @@ long long int stoi_bg(char *beg, char *end){
 }
 
 float stof(char *st){
+
+  char *beg = st;
+  char *cur = st;
+  while(*cur != '\0'){
+    cur++;
+  }
+  char *end = (cur - 1);
+  if (isInt(beg, end)) return ((float)stoi(st));
   
   int sign = 0;
   int nc=0;
