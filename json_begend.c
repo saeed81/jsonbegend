@@ -890,11 +890,23 @@ Index array_value_pt(char *beg, char *end, char *cind){
 	}
       }
       if (icol == 0 && nel == 0){
-	//printf("here1 (icol == 0 && nel == 0) last %d\t first %d\n",last,first);
-	if (nel == fun(cind)){
-	  indout.findex = first;
-	  indout.lindex = last;
-	  stop = 0;
+	//we check if we dont have , 
+	int icomma = 0;
+	for(char *cpt=(beg+1); cpt < end; ++cpt){
+	  if (*cpt == ',') icomma = 1;
+	}
+	if ((icomma == 0) && (nel == fun(cind))){
+	  indout.findex = 1;
+	  indout.lindex = (len-2);
+	  stop=0;
+	}
+	else{
+	  printf("here1 (icol == 0 && nel == 0) last %d\t first %d\n",last,first);
+	  if (nel == fun(cind) ){
+	    indout.findex = first;
+	    indout.lindex = last;
+	    stop = 0;
+	  }
 	}
       }
 
