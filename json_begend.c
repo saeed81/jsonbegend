@@ -1819,6 +1819,31 @@ int array_count_pt(char *beg, char *end){
   return nel;
 }
 
+int st_bool(char *beg, char *end){
+
+  int resultt   = 1;
+  int resultf   = 1;
+  char *ctrue  = "true";
+  char *cfalse = "false";
+  char *tct     = ctrue;
+  char *tcf     = cfalse;
+
+  for (char *tmp = beg; tmp <=end && *tct != '\0';++tmp){
+    if (*tmp != *tct) resultt = 0;
+    tct++;
+  }
+  for (char *tmp = beg; tmp <=end && *tcf != '\0';++tmp){
+    if (*tmp != *tcf) resultf = 0;
+    tcf++;
+  }
+
+  int result = 0;
+  if (resultt) result = 1;
+  if (resultf) result = 0;
+
+  return result;
+}
+
 void copytostring(char *cout, int sz, char *beg, char *end){
 
   char *tmp = (char *)cout;
