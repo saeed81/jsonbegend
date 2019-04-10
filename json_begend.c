@@ -1819,6 +1819,32 @@ int array_count_pt(char *beg, char *end){
   return nel;
 }
 
+void copytostring(char *cout, int sz, char *beg, char *end, int removequote){
+
+  char *tmp = (char *)cout;
+  char *str = (char *)cout;
+  int ii = 0;
+
+  if (removequote){
+    if ( *beg != '"' && *end != '"') return;
+    for(char *it =(beg+1); (it<=(end-1) && ii < sz) ;++it){
+      *tmp = *it;
+      ii++;
+      tmp++;
+    }
+    *tmp = '\0';
+  }
+  else {
+    for(char *it =(beg); (it<=(end) && ii < sz) ;++it){
+      *tmp = *it;
+      ii++;
+      tmp++;
+    }
+    *tmp = '\0';
+  }
+  tmp=str;
+}
+
 int st_bool(char *beg, char *end){
 
   int resultt   = 1;
@@ -1842,20 +1868,6 @@ int st_bool(char *beg, char *end){
   if (resultf) result = 0;
 
   return result;
-}
-
-void copytostring(char *cout, int sz, char *beg, char *end){
-
-  char *tmp = (char *)cout;
-  char *str = (char *)cout;
-  int ii = 0;
-  for(char *it =beg; (it<=end && ii < sz) ;++it){
-    *tmp = *it;
-    ii++;
-    tmp++;
-  }
-  *tmp = '\0';
-  tmp=str;
 }
 
 void outputtobuffer(FILE *file, char *str){
