@@ -1405,7 +1405,7 @@ char *json_load(char *filename){
 }
 
 String getvalue(char *content, char *key,...){
-  String rst = {NULL, NULL,' '};
+  String rst = {NULL, NULL,JSON_UNDEF};
   if (content == NULL) return rst;
   if (key == NULL) return rst; 
   char *str = content;
