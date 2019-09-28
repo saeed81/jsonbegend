@@ -4,7 +4,7 @@
 
 typedef enum TTYPE {JSON_ARRAY = 1<<0, JSON_OBJECT = 1<<2, JSON_STRING = 1<<3, JSON_INT = 1<<4, JSON_FLOAT = 1 <<5, JSON_BOOL = 1 << 6, JSON_NULL = 1 << 7, JSON_UNDEF = 1 <<8,}TYPE; 
 
-int isnull(char *beg, char *end){
+static int isnull(char *beg, char *end){
   if (beg == NULL || end == NULL) return 0;
   int len = 0;
   char *tmp = beg;
@@ -19,7 +19,7 @@ int isnull(char *beg, char *end){
   }
   return 0;
 }
-int isbool(char *beg, char *end){
+static int isbool(char *beg, char *end){
   if (beg == NULL || end == NULL) return 0;
   int len = 0;
   char *tmp = beg;
@@ -45,7 +45,7 @@ int isbool(char *beg, char *end){
   }
   return 0;
 }
-int isdotnumeric (char c){
+static int isdotnumeric (char c){
   int isnum = 0;
   char dotnumeric[] = ".0123456789";
   for (int i=0;i<=10;++i){
@@ -54,7 +54,7 @@ int isdotnumeric (char c){
   return isnum;
 }
 
-int ishasonedot (char *beg, char *end){
+static int ishasonedot (char *beg, char *end){
   if (beg == NULL || end == NULL) return 0;
   char *tmp = beg;
   int ncount = 0;
@@ -66,7 +66,7 @@ int ishasonedot (char *beg, char *end){
   ir = (ncount == 1) ? 1 : 0;
   return ir;
 }
-int ishasdot (char *beg, char *end){
+static int ishasdot (char *beg, char *end){
   if (beg == NULL || end == NULL) return 0;
   char *tmp = beg;
   int ncount = 0;
@@ -79,12 +79,12 @@ int ishasdot (char *beg, char *end){
   return ir;
 }
 
-int isNumeric(char c){
+static int isNumeric(char c){
   return ( (c>= '0') && (c <= '9'));
 }
 
 
-int isFloat(char *beg, char *end){
+static int isFloat(char *beg, char *end){
   if (beg == NULL || end == NULL)  return 0;
   char *tmp = beg, *tmp1 = NULL;
   int ir = 0;
@@ -141,7 +141,7 @@ int isFloat(char *beg, char *end){
   return 0;
 }
 
-int isInt(char *beg, char *end){
+static int isInt(char *beg, char *end){
   if (beg == NULL || end == NULL) return 0;
   char *tmp = beg, *tmp1 = NULL;
   int ir = 0;
@@ -184,7 +184,7 @@ int isInt(char *beg, char *end){
   }
   return 0;
 }
-long long int pow10(long long int n){
+static long long int pow10(long long int n){
   long long int d = 1;
   if (n > 0){ 
     for (long long int i=0; i < n;++i) d *= 10;
@@ -192,7 +192,7 @@ long long int pow10(long long int n){
   return d;
 }
 
-float npow10(int n){
+static float npow10(int n){
   float d = 1.0;
   if (n > 0){ 
     for (int i=0; i < n;++i) d /= 10.0;
@@ -200,7 +200,7 @@ float npow10(int n){
   return d;
 }
 
-long long int stoi(char *st){
+static long long int stoi(char *st){
   int sign = 0;
   long long int nc=0;
   char *temp = st;
@@ -240,7 +240,7 @@ long long int stoi(char *st){
   return (c*d);
 }
 
-long long int stoi_bg(char *beg, char *end){
+static long long int stoi_bg(char *beg, char *end){
   int sign = 0;
   long long int nc=0;
   char *temp = beg;
@@ -281,7 +281,7 @@ long long int stoi_bg(char *beg, char *end){
   return (c*d);
 }
 
-float stof(char *st){
+static float stof(char *st){
 
   char *beg = st;
   char *cur = st;
@@ -357,7 +357,7 @@ float stof(char *st){
   return (c*(d + df));
 }
 
-float stof_bg(char *beg, char *end){
+static float stof_bg(char *beg, char *end){
 
   if (isInt(beg, end)) return ((float)stoi_bg(beg,end));
   
@@ -429,7 +429,7 @@ float stof_bg(char *beg, char *end){
 
 
 /* matching.h file is here now */
-int istoplevelkey(char *beg, char *end){
+static int istoplevelkey(char *beg, char *end){
 
   char *tmp = beg;
 
@@ -470,7 +470,7 @@ int istoplevelkey(char *beg, char *end){
   return 1;
 }
 
-int checksymbolbeforeparse(char *str){
+static int checksymbolbeforeparse(char *str){
 
   char *tmp = str;
 
@@ -511,7 +511,7 @@ int checksymbolbeforeparse(char *str){
   return 0;
 }
 
-int checkforquote(char *str){
+static int checkforquote(char *str){
   
   char *tmp = str;
   int exist = 0;
@@ -526,7 +526,7 @@ int checkforquote(char *str){
   
   return 1;
 }
-char *addquote(char *str){
+static char *addquote(char *str){
   
   char *tmp = str;
   int len   = 0;
@@ -564,7 +564,7 @@ char *addquote(char *str){
   return reg;
 }
 
-void match(char *str, char lsymbol, int *index){
+static void match(char *str, char lsymbol, int *index){
 
   char rsymbol = '0';
   int element  = 1;
@@ -610,7 +610,7 @@ typedef struct tIndex{
   int lindex;
 }Index;
 
-int power10(int n){
+static int power10(int n){
  int a = 1;
   while(n--){
     a *= 10;
@@ -618,7 +618,7 @@ int power10(int n){
   return a;
 }
 
-int fun(char *c){
+static int fun(char *c){
   char *tmp = c;
   int len = 0;
   while (*tmp != '\0'){
@@ -637,7 +637,7 @@ int fun(char *c){
   return index;
 }
 
-char *array_value(char *st, char *cind){
+static char *array_value(char *st, char *cind){
   int len   = 0;
   char *tmp = st;
   if (st == NULL) return NULL;
@@ -795,7 +795,7 @@ char *array_value(char *st, char *cind){
 
 }
 
-Index array_value_pt(char *beg, char *end, char *cind){
+static Index array_value_pt(char *beg, char *end, char *cind){
   int len   = 0;
   char *tmp = beg;
   while(tmp <= end){
@@ -940,7 +940,7 @@ Index array_value_pt(char *beg, char *end, char *cind){
 }
 
 
-void array_explode_bg(char *beg, char *end){
+static void array_explode_bg(char *beg, char *end){
   int len   = 0;
   char *tmp = beg;
   if (beg == NULL || end == NULL) return;
@@ -1027,7 +1027,7 @@ void array_explode_bg(char *beg, char *end){
   //printf("%d\n",power10(5));
 }
 
-void array_explode(char *st){
+static void array_explode(char *st){
   int len   = 0;
   char *tmp = st;
   if (st == NULL) return;
@@ -1120,7 +1120,7 @@ typedef struct tString{
   TYPE type;
 }String;
 
-void stringinfo(String *str){
+static void stringinfo(String *str){
   if ((str->beg != NULL) && (str->end != NULL)){
     printf("Value is = ");
     for (char *it =str->beg; it <= str->end;++it)printf("%c",*it);
@@ -1129,7 +1129,7 @@ void stringinfo(String *str){
   return;
 }
 
-void stringfullinfo(String *str){
+static void stringfullinfo(String *str){
   if ((str->beg != NULL) && (str->end != NULL)){
     switch(str->type){
     case JSON_ARRAY: {
@@ -1164,7 +1164,7 @@ void stringfullinfo(String *str){
   return ;
 }
 
-int getLen(char *str){
+static int getLen(char *str){
   int len = 0;
   if (str != NULL){
     while(*str != '\0'){
@@ -1175,7 +1175,7 @@ int getLen(char *str){
   return len;
 }
 
-void removewhitespace(char *str){
+static void removewhitespace(char *str){
   if (str == NULL)return;
   char *tmp = str;
   int ne =0;
@@ -1190,7 +1190,7 @@ void removewhitespace(char *str){
   str = tmp;
 }
 
-void quotetowhitespace(char *str){
+static void quotetowhitespace(char *str){
   char *tmp = str;
   if (str != NULL){
     while(*tmp != '\0'){
@@ -1202,7 +1202,7 @@ void quotetowhitespace(char *str){
   }
 }
 
-void writeonscreen(char *str){
+static void writeonscreen(char *str){
   if (str == NULL)return;
   //quotetowhitespace(str);
   //removewhitespace(str);
@@ -1215,7 +1215,7 @@ void writeonscreen(char *str){
   printf("\n");
 }
 
-int iswhitespace(char c){
+static int iswhitespace(char c){
   if ( (c == ' ') || (c == '\t') || ( c == '\n') || (c == '\r') || (c == '\t') || (c == '\v') || (c == '\f')){
     return 1;
   }
@@ -1223,7 +1223,7 @@ int iswhitespace(char c){
   return 0;
 }
 
-TYPE typevalue(char *ar, int findex, int lindex){
+static TYPE typevalue(char *ar, int findex, int lindex){
 
   TYPE type = JSON_UNDEF;
 
@@ -1255,7 +1255,7 @@ TYPE typevalue(char *ar, int findex, int lindex){
   return type;
 }
 
-void findpt(char *reg, int lnr, char *beg, char *end, int *ibeg, int *iend){
+static void findpt(char *reg, int lnr, char *beg, char *end, int *ibeg, int *iend){
   int k = 0;
   int i = 0;
   int ncount = 0;
@@ -1300,7 +1300,7 @@ void findpt(char *reg, int lnr, char *beg, char *end, int *ibeg, int *iend){
   return;
 }
 
-int find(char *reg, char *str, int *first, int *last){
+static int find(char *reg, char *str, int *first, int *last){
 
   int  lnr = getLen(reg);
   int  lns = getLen(str);
@@ -1341,7 +1341,7 @@ int find(char *reg, char *str, int *first, int *last){
   return result;
 }
 
-int Strcmp(char *s1, char *s2){
+static int Strcmp(char *s1, char *s2){
   
   int i = 0;
   int ns1 = 0, ns2 = 0;
@@ -1369,7 +1369,7 @@ int Strcmp(char *s1, char *s2){
   return 1;
 }
  
-char *json_load(char *filename){
+static char *json_load(char *filename){
 
   FILE *inp = NULL;
 
@@ -1404,7 +1404,7 @@ char *json_load(char *filename){
   return content;
 }
 
-String getvalue(char *content, char *key,...){
+static String getvalue(char *content, char *key,...){
   String rst = {NULL, NULL,JSON_UNDEF};
   if (content == NULL) return rst;
   if (key == NULL) return rst; 
@@ -1736,7 +1736,7 @@ String getvalue(char *content, char *key,...){
 /*========================================================================*/
   
 /*========================================================================*/
-int array_count_pt(char *beg, char *end){
+static int array_count_pt(char *beg, char *end){
   int len   = 0;
   char *tmp = beg;
   while(tmp <= end){
@@ -1819,7 +1819,7 @@ int array_count_pt(char *beg, char *end){
   return nel;
 }
 
-void copytostring(char *cout, int sz, char *beg, char *end, int removequote){
+static void copytostring(char *cout, int sz, char *beg, char *end, int removequote){
 
   char *tmp = (char *)cout;
   char *str = (char *)cout;
@@ -1845,7 +1845,7 @@ void copytostring(char *cout, int sz, char *beg, char *end, int removequote){
   tmp=str;
 }
 
-int st_bool(char *beg, char *end){
+static int st_bool(char *beg, char *end){
 
   int resultt   = 1;
   int resultf   = 1;
@@ -1870,7 +1870,7 @@ int st_bool(char *beg, char *end){
   return result;
 }
 
-void outputtobuffer(FILE *file, char *str){
+static void outputtobuffer(FILE *file, char *str){
 
   char *tmp = str;
   while(*tmp != '\0'){
